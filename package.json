@@ -1,0 +1,31 @@
+{
+  "name": "syntag",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "https://github.com/hudlow/syntag#readme",
+  "bugs": {
+    "url": "https://github.com/hudlow/syntag/issues"
+  },
+  "license": "MIT",
+  "author": "Dan Hudlow",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hudlow/syntag.git"
+  },
+  "type": "module",
+  "main": "taglet.ts",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "tsx --test *.test.ts",
+    "format": "oxfmt",
+    "lint": "oxlint",
+    "fix": "oxlint --fix && oxfmt"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "oxfmt": "^0.40.0",
+    "oxlint": "^1.55.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
