@@ -1,27 +1,32 @@
 {
-  "name": "syntag",
+  "name": "taglet",
   "version": "0.0.1",
   "description": "",
-  "homepage": "https://github.com/hudlow/syntag#readme",
+  "homepage": "https://github.com/hudlow/taglet#readme",
   "bugs": {
-    "url": "https://github.com/hudlow/syntag/issues"
+    "url": "https://github.com/hudlow/taglet/issues"
   },
   "license": "MIT",
   "author": "Dan Hudlow",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hudlow/syntag.git"
+    "url": "git+https://github.com/hudlow/taglet.git"
   },
   "type": "module",
-  "main": "taglet.ts",
+  "main": "distribution/esm/index.js",
   "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "tsc --module commonjs --moduleResolution node10 --outDir ./distribution/cjs && echo >./distribution/cjs/package.json '{\"type\":\"commonjs\"}'",
+    "build:esm": "tsc --outDir ./distribution/esm",
     "check": "tsc --noEmit",
-    "test": "tsx --test *.test.ts",
+    "test": "tsx --test source/**/*.test.ts",
     "format": "oxfmt",
     "lint": "oxlint",
-    "fix": "oxlint --fix && oxfmt"
+    "fix": "oxlint --fix && oxfmt",
+    "verify": "oxfmt --check && oxlint && tsc --noEmit && tsx --test source/**/*.test.ts"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.7",
     "@types/node": "^25.3.5",
     "oxfmt": "^0.40.0",
     "oxlint": "^1.55.0",

@@ -1,25 +1,28 @@
 /*
  * © Copyright 2026 Dan Hudlow
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
- * associated documentation files (the “Software”), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all copies or substantial
- * portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
- * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
+import { TagletError, taglet } from "./index.js";
 import { describe, test } from "node:test";
 import { strict as assert } from "node:assert";
-import { taglet } from "./taglet.js";
 
 describe("taglet", () => {
   test("basic substitution", () => {
@@ -76,7 +79,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
         assert.throws(
           () => taglet`| -
@@ -84,7 +87,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
         assert.throws(
           () => taglet`|2 +
@@ -92,7 +95,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
         assert.throws(
           () => taglet`|- 2
@@ -100,7 +103,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
         assert.throws(
           () => taglet`| + 2
@@ -108,7 +111,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
         assert.throws(
           () => taglet`| 2 -
@@ -116,7 +119,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
       });
       test("whitespace after header is illegal", () => {
@@ -126,7 +129,7 @@ describe("taglet", () => {
             2
             3
           `,
-          (e) => e instanceof taglet.error.BlockHeaderError,
+          (e) => e instanceof TagletError.BlockHeaderError,
         );
       });
     });
@@ -443,7 +446,7 @@ describe("taglet", () => {
   });
   describe("escaping", () => {
     test("backslashes normally do not need escaping", () => {
-      assert.equal(taglet`a\b`.toString(), "a\\b");
+      assert.equal(taglet`a\b`.toString(), String.raw`a\b`);
     });
     test("line endings can be escaped", () => {
       assert.equal(
@@ -474,14 +477,14 @@ describe("taglet", () => {
           1\\
           2
         `.toString(),
-        "1\\ 2",
+        String.raw`1\ 2`,
       );
       assert.equal(
         taglet`|-
           1\\\
           2
         `.toString(),
-        "1\\2",
+        String.raw`1\2`,
       );
       assert.equal(
         taglet`>-
@@ -502,7 +505,7 @@ describe("taglet", () => {
           1\\\\
           2
         `.toString(),
-        "1\\\\ 2",
+        String.raw`1\\ 2`,
       );
     });
   });
